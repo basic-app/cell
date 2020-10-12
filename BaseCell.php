@@ -25,7 +25,7 @@ abstract class BaseCell
             }
         }
 
-        if ($this->viewNamespace === null)
+        if ($this->viewsNamespace === null)
         {
             $class = get_class($this);
 
