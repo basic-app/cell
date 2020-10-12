@@ -13,17 +13,7 @@ abstract class BaseCell
 
     public function __construct(array $properties = [])
     {
-        foreach($properties as $key => $value)
-        {
-            if (property_exists($this, $key))
-            {
-                $property->$key = $value;
-            }
-            else
-            {
-                throw new CellException('Undefined property: ' . $key);
-            }
-        }
+        $this->setProperties($properties);
 
         if ($this->viewsNamespace === null)
         {
@@ -40,7 +30,22 @@ abstract class BaseCell
         }
     }
 
-    public function render(string $view, array $params = [], array $options = []) : string
+    public function setProperties(array $properties = [])
+    {
+        foreach($properties as $key => $value)
+        {
+            if (property_exists($this, $key))
+            {
+                $property->$key = $value;
+            }
+            else
+            {
+                throw new CellException('Undefined property: ' . $key);
+            }
+        }
+    }
+
+    public function view(string $view, array $params = []) : string
     {
         if ($this->viewsNamespace)
         {
@@ -54,7 +59,11 @@ abstract class BaseCell
             $view = "App\\Views\\" . $view;
         }
 
-        return view($view, $params, $options);
+        $params['owner'] = $this;
+
+        return view($view, $params, ['saveData' => false]);
     }
+
+    public static function render(array $params);
 
 }
