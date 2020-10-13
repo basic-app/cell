@@ -17,17 +17,24 @@ abstract class BaseCell
 
         if ($this->viewsNamespace === null)
         {
-            $class = get_class($this);
-
-            $segments = explode("\\", $class);
-
-            $class = array_pop($segments);
-
-            if (count($segments) > 0)
-            {
-                $this->viewsNamespace = implode("\\", $segments);
-            }
+            $this->viewsNamespace = $this->getViewsNamespace();
         }
+    }
+
+    public function getViewsNamespace()
+    {
+        $class = get_class($this);
+
+        $segments = explode("\\", $class);
+
+        $class = array_pop($segments);
+
+        if (count($segments) > 0)
+        {
+            return implode("\\", $segments);
+        }
+
+        return null;
     }
 
     public function setProperties(array $properties = [])
