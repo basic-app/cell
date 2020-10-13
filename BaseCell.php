@@ -6,7 +6,7 @@
  */
 namespace BasicApp\Cell;
 
-abstract class BaseCell
+abstract class BaseCell implements CellInterface
 {
 
     public $viewsNamespace;
@@ -43,7 +43,7 @@ abstract class BaseCell
         {
             if (property_exists($this, $key))
             {
-                $property->$key = $value;
+                $this->$key = $value;
             }
             else
             {
@@ -71,6 +71,6 @@ abstract class BaseCell
         return view($view, $params, ['saveData' => false]);
     }
 
-    public static function render(array $params);
+    public abstract function render(array $params) : string;
 
 }
